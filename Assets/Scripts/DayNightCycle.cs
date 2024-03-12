@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour
@@ -8,7 +10,7 @@ public class DayNightCycle : MonoBehaviour
     public float fadeDuration = 2f; // Duration for the light fade
 
     private float currentCycleTime;
-    private bool isDaytime = true;
+    public bool isDaytime { get; private set; } = true;
     private float fadeStartTime; // Time when fade starts
 
     private void Start()
