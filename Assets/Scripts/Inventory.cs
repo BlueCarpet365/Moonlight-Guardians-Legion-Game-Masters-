@@ -23,6 +23,26 @@ public class Inventory : MonoBehaviour
         UpdateUIValues();
     }
 
+    public bool CanBuild(Collectible.ItemType itemType, int quantity)
+    {
+        switch (itemType)
+        {
+            case Collectible.ItemType.Wood:
+                if (wood >= quantity)
+                {
+                    return true;
+                }
+                break;
+            case Collectible.ItemType.Stone:
+                if (stone >= quantity)
+                {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
     private void UpdateUIValues()
     {
         woodText.text = "Wood: " + wood.ToString();
