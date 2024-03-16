@@ -7,9 +7,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     public float spawnInterval = 2f;
     public float spawnRadius = 5f;
-    public int maxEnemies = 10;
 
-    private int currentEnemies = 0;
+    private List<GameObject> spawnedEnemies = new List<GameObject>();
     private float timer = 0f;
     private DayNightCycle dayNightCycle;
 
@@ -22,9 +21,6 @@ public class EnemySpawner : MonoBehaviour
     {
         if (dayNightCycle && !dayNightCycle.isDaytime)
         {
-            if (currentEnemies >= maxEnemies)
-                return;
-
             timer += Time.deltaTime;
 
             if (timer >= spawnInterval)
@@ -33,6 +29,15 @@ public class EnemySpawner : MonoBehaviour
                 timer = 0f;
             }
         }
+        else
+        {
+            // If it's daytime, destroy all spawned enemies and clear the list
+            foreach (var enemy in spawnedEnemies)
+            {
+                Destroy(enemy);
+            }
+            spawnedEnemies.Clear();
+        }
     }
 
     private void SpawnEnemy()
@@ -40,8 +45,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
         spawnPosition.y = 0f;
 
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        currentEnemies++;
+        GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        spawnedEnemies.Add(newEnemy);
     }
 }
-
