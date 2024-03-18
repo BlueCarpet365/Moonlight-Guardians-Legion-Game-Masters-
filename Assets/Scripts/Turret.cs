@@ -1,12 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
+    [Header("Att")]
     private Transform target;
     public float range = 20f;
+    public float fireRate = 1f;
+    private float fireCountdown = 0f;
+
+    [Header("Setup")]
     public string enemyTag = "Enemy";
+    public Transform rotator;
+    public float turnSpeed = 10f;
+    public GameObject bulletPfb;
+    public Transform firePoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +55,28 @@ public class Turret : MonoBehaviour
         {
             return;
         }
+
+        Vector3 dir = target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        Vector3 rotation = Quaternion.Lerp(rotator.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        rotator.rotation = Quaternion.Euler (0f, rotation.y, 0f);
+
+        if (fireCountdown <= 0f)
+        {
+            Shoot();
+            fireCountdown = 1f / fireRate;
+        }
+
+        fireCountdown -= Time.deltaTime;
+    }
+
+    void Shoot()
+    {
+        GameObject bulletGO =  (GameObject)Instantiate(bulletPfb, firePoint.position, firePoint.rotation);
+        Bullet bullet = bulletGO.GetComponent<Bullet>();
+
+        if (bullet != null)
+            bullet.Seek(target);
     }
 
     void OnDrawGizmosSelected()
