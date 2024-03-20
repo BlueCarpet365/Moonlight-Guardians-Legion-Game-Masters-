@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd870927eebd0424e8d06612161ccb8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 90
+  speed: 75
   impactEffect: {fileID: 4903883967433662898, guid: 62f3d8e35db84e1489a3de0642492af6, type: 3}
   damage: 20
 --- !u!1001 &4022226815813667251

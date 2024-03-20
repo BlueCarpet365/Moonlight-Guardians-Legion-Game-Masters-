@@ -1,4 +1,3 @@
-// Enemy script
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -10,9 +9,10 @@ public class Enemy : MonoBehaviour
     private float health;
     public GameObject enemyDE;
     public Image healthBar;
-
-    // Add a boolean to track whether the enemy is dead
     private bool isDead = false;
+    public int damage = 10; // Damage dealt by the enemy
+    public float damageInterval = 3f; // Interval between each damage
+    private bool canDealDamage = true; // Flag to control damage dealing
 
     void Start()
     {
@@ -21,9 +21,35 @@ public class Enemy : MonoBehaviour
         health = startHealth;
     }
 
+    void Update()
+    {
+        if (canDealDamage && health > 0)
+        {
+            canDealDamage = false;
+            Invoke("EnableDamage", damageInterval); // Enable damage dealing after the interval
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Building"))
+        {
+            BuildingHealth building = collision.gameObject.GetComponent<BuildingHealth>();
+            if (building != null)
+            {
+                building.TakeDamage(damage);
+            }
+        }
+    }
+
+    void EnableDamage()
+    {
+        canDealDamage = true;
+    }
+
     public void TakeDamage(int amount)
     {
-        if (isDead) return; // If the enemy is already dead, exit the method
+        if (isDead) return;
 
         health -= amount;
         healthBar.fillAmount = health / startHealth;
@@ -36,18 +62,10 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        isDead = true; // Mark the enemy as dead to prevent further damage
+        isDead = true;
         GameObject effect = Instantiate(enemyDE, transform.position, Quaternion.identity);
         Destroy(effect, 0.7f);
         Destroy(gameObject);
-    }
-
-    void Update()
-    {
-        if (navMeshAgent.destination == transform.position)
-        {
-            FindAndSetTarget();
-        }
     }
 
     void FindAndSetTarget()
