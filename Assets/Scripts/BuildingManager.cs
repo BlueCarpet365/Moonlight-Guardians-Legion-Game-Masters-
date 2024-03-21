@@ -1,19 +1,32 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class Building
+    {
+        public GameObject GameObject;
+        public Collectible.ItemType ItemType;
+        public int Cost;
+    }
+
     public LayerMask layerMaskToIgnore;
     [SerializeField] private Inventory inventory;
-    [SerializeField] private GameObject building;
     [SerializeField] private Button buildWood;
+    [SerializeField] private Button buildStone;
     [SerializeField] private Button stopBuild;
     private bool isBuilding;
+    [SerializeField] private Building[] buildings;
+    private Building selectedBuilding;
 
     private void Start()
     {
-        buildWood.onClick.AddListener(StartBuilding);
+        selectedBuilding = buildings[0];
+        buildWood.onClick.AddListener(BuildWood);
+        buildStone.onClick.AddListener(BuildStone);
         stopBuild.onClick.AddListener(StopBuilding);
     }
 
@@ -29,16 +42,16 @@ public class BuildingManager : MonoBehaviour
             {
                 Vector3 hitPosition = hit.point;
 
-                building.transform.position = hitPosition + Vector3.up;
+                selectedBuilding.GameObject.transform.position = hitPosition + Vector3.up;
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     StopBuilding();
 
-                    if (inventory.CanBuild(Collectible.ItemType.Wood, 2) && hit.transform.tag == "BuildArea")
+                    if (inventory.CanBuild(selectedBuilding.ItemType, selectedBuilding.Cost) && hit.transform.tag == "BuildArea")
                     {
-                        inventory.AddResource(Collectible.ItemType.Wood, -2); 
-                        GameObject newBuilding = Instantiate(building, hitPosition + Vector3.up, Quaternion.identity);
+                        inventory.AddResource(selectedBuilding.ItemType, -selectedBuilding.Cost);
+                        GameObject newBuilding = Instantiate(selectedBuilding.GameObject, hitPosition + Vector3.up, Quaternion.identity);
                         newBuilding.SetActive(true);
                     }
                 }
@@ -46,19 +59,30 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    private void StartBuilding()
+    private void BuildWood()
     {
+        selectedBuilding.GameObject.SetActive(false);
+        selectedBuilding = buildings[0];
         isBuilding = true;
-        building.SetActive(true);
-        buildWood.gameObject.SetActive(false);
+        selectedBuilding.GameObject.SetActive(true);
+        stopBuild.gameObject.SetActive(true);
+    }
+
+    private void BuildStone()
+    {
+        selectedBuilding.GameObject.SetActive(false);
+        selectedBuilding = buildings[1];
+        isBuilding = true;
+        selectedBuilding.GameObject.SetActive(true);
         stopBuild.gameObject.SetActive(true);
     }
 
     private void StopBuilding()
     {
         isBuilding = false;
-        building.SetActive(false);
+        selectedBuilding.GameObject.SetActive(false);
         stopBuild.gameObject.SetActive(false);
         buildWood.gameObject.SetActive(true);
+        buildStone.gameObject.SetActive(true);
     }
 }

@@ -1,7 +1,9 @@
+using TMPro;
 using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour
 {
+    public int dayCount = 1;
     public Light sunLight;
     public float dayLengthSeconds = 10f;
     public float nightLengthSeconds = 10f;
@@ -11,9 +13,12 @@ public class DayNightCycle : MonoBehaviour
     public bool isDaytime { get; private set; } = true;
     private float fadeStartTime;
     [SerializeField] private CollectibleSpawner collectibleSpawner;
+    [SerializeField] private TMP_Text dayText;
 
     private void Start()
     {
+        dayCount = 1;
+        dayText.text = "Day " + dayCount;
         currentCycleTime = 0f;
         UpdateLightIntensity();
     }
@@ -36,6 +41,7 @@ public class DayNightCycle : MonoBehaviour
             fadeStartTime = Time.time;
             OnDayNightChange?.Invoke(isDaytime);
             collectibleSpawner.SpawnResources();
+            dayText.text = "Day " + ++dayCount;
         }
 
         UpdateLightIntensity();
