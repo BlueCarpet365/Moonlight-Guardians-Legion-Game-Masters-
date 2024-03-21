@@ -10,6 +10,7 @@ public class DayNightCycle : MonoBehaviour
     private float currentCycleTime;
     public bool isDaytime { get; private set; } = true;
     private float fadeStartTime;
+    [SerializeField] private CollectibleSpawner collectibleSpawner;
 
     private void Start()
     {
@@ -34,6 +35,7 @@ public class DayNightCycle : MonoBehaviour
             currentCycleTime = 0f;
             fadeStartTime = Time.time;
             OnDayNightChange?.Invoke(isDaytime);
+            collectibleSpawner.SpawnResources();
         }
 
         UpdateLightIntensity();

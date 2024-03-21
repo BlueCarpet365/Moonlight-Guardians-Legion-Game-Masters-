@@ -35,7 +35,7 @@ public class BuildingManager : MonoBehaviour
                 {
                     StopBuilding();
 
-                    if (inventory.CanBuild(Collectible.ItemType.Wood, 2))
+                    if (inventory.CanBuild(Collectible.ItemType.Wood, 2) && hit.transform.tag == "BuildArea")
                     {
                         inventory.AddResource(Collectible.ItemType.Wood, -2); 
                         GameObject newBuilding = Instantiate(building, hitPosition + Vector3.up, Quaternion.identity);
