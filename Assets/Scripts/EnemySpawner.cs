@@ -15,7 +15,17 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         dayNightCycle = FindObjectOfType<DayNightCycle>();
+
+        if (enemyPrefab != null)
+        {
+            Debug.Log("Enemy Prefab assigned: " + enemyPrefab.name);
+        }
+        else
+        {
+            Debug.LogError("Enemy Prefab is not assigned!");
+        }
     }
+
 
     private void Update()
     {
@@ -42,8 +52,16 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
+        if (enemyPrefab == null)
+        {
+            Debug.LogError("Enemy Prefab is null. Cannot spawn enemy.");
+            return;
+        }
+
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
         spawnPosition.y = 0f;
+
+        Debug.Log("Spawning enemy at position: " + spawnPosition);
 
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         spawnedEnemies.Add(newEnemy);

@@ -5,6 +5,11 @@ public class Bullet : MonoBehaviour
     private Transform target;
     public float speed = 70f;
     public GameObject impactEffect;
+    public int damage = 20;
+
+    // Add a boolean to track whether the bullet has hit a target
+    private bool hasHit = false;
+
     // Start is called before the first frame update
     public void Seek(Transform _target)
     {
@@ -14,7 +19,9 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( target == null)
+        if (hasHit) return; // If the bullet has already hit a target, exit the method
+
+        if (target == null)
         {
             Destroy(gameObject);
             return;
@@ -34,8 +41,20 @@ public class Bullet : MonoBehaviour
 
     void HitTarget()
     {
-        GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
+        hasHit = true; // Mark the bullet as having hit a target
+        GameObject effectIns = Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(effectIns, 2f);
+        Damage(target);
         Destroy(gameObject);
+    }
+
+    void Damage(Transform enemy)
+    {
+        Enemy e = enemy.GetComponent<Enemy>();
+
+        if (e != null)
+        {
+            e.TakeDamage(damage);
+        }
     }
 }
