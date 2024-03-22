@@ -34,10 +34,10 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Building"))
         {
-            BuildingHealth building = collision.gameObject.GetComponent<BuildingHealth>();
-            if (building != null)
+            MainBase mainBase = collision.gameObject.GetComponent<MainBase>();
+            if (mainBase != null)
             {
-                building.TakeDamage(damage);
+                mainBase.TakeDamage(damage);
             }
         }
     }
