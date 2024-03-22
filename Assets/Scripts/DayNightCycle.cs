@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class DayNightCycle : MonoBehaviour
     private float fadeStartTime;
     [SerializeField] private CollectibleSpawner collectibleSpawner;
     [SerializeField] private TMP_Text dayText;
+    [SerializeField] private UIAutoAnimation dayNightPopup;
 
     private void Start()
     {
@@ -21,6 +23,8 @@ public class DayNightCycle : MonoBehaviour
         dayText.text = "Day " + dayCount;
         currentCycleTime = 0f;
         UpdateLightIntensity();
+        dayNightPopup.EntranceAnimation();
+        StartCoroutine(DayNightExitAnimation());
     }
 
     private void Update()
@@ -33,6 +37,9 @@ public class DayNightCycle : MonoBehaviour
             currentCycleTime = 0f;
             fadeStartTime = Time.time;
             OnDayNightChange?.Invoke(isDaytime);
+            dayNightPopup.GetComponent<TMP_Text>().text = "Night Time Started";
+            dayNightPopup.EntranceAnimation();
+            StartCoroutine(DayNightExitAnimation());
         }
         else if (!isDaytime && currentCycleTime > nightLengthSeconds)
         {
@@ -42,9 +49,18 @@ public class DayNightCycle : MonoBehaviour
             OnDayNightChange?.Invoke(isDaytime);
             collectibleSpawner.SpawnResources();
             dayText.text = "Day " + ++dayCount;
+            dayNightPopup.GetComponent<TMP_Text>().text = "Day Time Started";
+            dayNightPopup.EntranceAnimation();
+            StartCoroutine(DayNightExitAnimation());
         }
 
         UpdateLightIntensity();
+    }
+
+    private IEnumerator DayNightExitAnimation()
+    {
+        yield return new WaitForSeconds(3f);
+        dayNightPopup.ExitAnimation();
     }
 
     private void UpdateLightIntensity()
