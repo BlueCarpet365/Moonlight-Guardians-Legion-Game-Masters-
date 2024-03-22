@@ -16,7 +16,7 @@ public class Collectible : MonoBehaviour
         if (other.tag == "Player")
         {
             FindObjectOfType<Inventory>().AddResource(Type, Quantity);
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
