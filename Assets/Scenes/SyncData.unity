@@ -3325,6 +3325,7 @@ GameObject:
   - component: {fileID: 786763848}
   - component: {fileID: 786763849}
   - component: {fileID: 786763850}
+  - component: {fileID: 786763851}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3379,6 +3380,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverUI: {fileID: 248513333}
+--- !u!114 &786763851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786763847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590b81ba39b577d4d9b8efc7ef911725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &811812078
 GameObject:
   m_ObjectHideFlags: 0
@@ -7126,7 +7139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayCount: 1
   sunLight: {fileID: 857849857}
-  dayLengthSeconds: 10
+  dayLengthSeconds: 3
   nightLengthSeconds: 20
   fadeDuration: 2
   collectibleSpawner: {fileID: 596024469}

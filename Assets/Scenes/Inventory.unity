@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4468891, g: 0.4967727, b: 0.5750013, a: 1}
+  m_IndirectSpecularColor: {r: 0.44688874, g: 0.4967724, b: 0.5750006, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -636,8 +636,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnAreaMin: {fileID: 204129230}
   spawnAreaMax: {fileID: 1728038466}
-  minResource: 1
-  maxResource: 3
+  minResource: 7
+  maxResource: 9
   collectibleToSpawn:
   - {fileID: 4584865160201335602, guid: c2fe08fdba4f6c94bb571c4ea0118a55, type: 3}
   - {fileID: 1928607385593792655, guid: ab72d5b5124c21147869053b2d55c334, type: 3}
