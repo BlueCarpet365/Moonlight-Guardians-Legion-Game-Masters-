@@ -120,5 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd8f70cb47f58341b5f70effb8da37b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerSound: {fileID: 8300000, guid: 8516e2cdc5d53454db247b8f4b765682, type: 3}
   Quantity: 1
   Type: 1
