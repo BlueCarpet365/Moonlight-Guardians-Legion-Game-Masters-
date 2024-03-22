@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public int damage = 10; // Damage dealt by the enemy
     public float damageInterval = 3f; // Interval between each damage
     private bool canDealDamage = true; // Flag to control damage dealing
+    [SerializeField] private Animator animator;
 
     void Start()
     {
@@ -39,7 +40,22 @@ public class Enemy : MonoBehaviour
             {
                 mainBase.TakeDamage(damage);
             }
+
+            BuildingHealth buildingHealth = collision.gameObject.GetComponent<BuildingHealth>();
+            if (buildingHealth != null)
+            {
+                buildingHealth.TakeDamage(damage);
+            }
+
+            animator.SetBool("isAttacking", true);
+            animator.SetBool("isMoving", false);
         }
+    }
+
+    void OnCollisionExit(Collision other)
+    {
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isMoving", true);
     }
 
     void EnableDamage()
@@ -63,6 +79,7 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         isDead = true;
+        animator.SetBool("isDeath", true);
         GameObject effect = Instantiate(enemyDE, transform.position, Quaternion.identity);
         Destroy(effect, 0.7f);
         Destroy(gameObject);
@@ -76,6 +93,7 @@ public class Enemy : MonoBehaviour
         {
             GameObject randomBuilding = buildings[Random.Range(0, buildings.Length)];
             navMeshAgent.SetDestination(randomBuilding.transform.position);
+            animator.SetBool("isMoving", true);
         }
         else
         {

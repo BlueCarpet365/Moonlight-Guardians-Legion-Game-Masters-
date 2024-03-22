@@ -26,7 +26,7 @@ public class MainBase : MonoBehaviour
 
     void UpdateHealthBars()
     {
-        float fillAmount = currentHealth / startHealth;
+        // float fillAmount = currentHealth / startHealth;
         foreach (var healthBarObj in healthBars)
         {
             if (healthBarObj != null)
@@ -34,7 +34,7 @@ public class MainBase : MonoBehaviour
                 Slider slider = healthBarObj.GetComponent<Slider>();
                 if (slider != null)
                 {
-                    slider.value = fillAmount;
+                    slider.value = currentHealth;
                 }
                 else
                 {

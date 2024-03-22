@@ -3,10 +3,22 @@ using TMPro;
 
 public class Inventory : MonoBehaviour
 {
+    public AudioClip triggerSound;
+    private AudioSource audioSource;
     [SerializeField] private int wood;
     [SerializeField] private int stone;
     [SerializeField] private TMP_Text woodText;
     [SerializeField] private TMP_Text stoneText;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.clip = triggerSound;
+    }
 
     public void AddResource(Collectible.ItemType itemType, int quantity)
     {
@@ -19,7 +31,10 @@ public class Inventory : MonoBehaviour
                 stone += quantity;
                 break;
         }
-        
+
+        if (quantity > 0)
+            audioSource.PlayOneShot(triggerSound);
+
         UpdateUIValues();
     }
 
