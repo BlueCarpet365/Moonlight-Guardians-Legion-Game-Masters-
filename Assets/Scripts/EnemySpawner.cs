@@ -35,7 +35,10 @@ public class EnemySpawner : MonoBehaviour
 
             if (timer >= spawnInterval)
             {
-                SpawnEnemy();
+                for (int i = 0; i < dayNightCycle.dayCount; i++)
+                {
+                    SpawnEnemy();
+                }
                 timer = 0f;
             }
         }
@@ -59,7 +62,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
-        spawnPosition.y = 0f;
+        spawnPosition.y = enemyPrefab.transform.position.y;
 
         Debug.Log("Spawning enemy at position: " + spawnPosition);
 

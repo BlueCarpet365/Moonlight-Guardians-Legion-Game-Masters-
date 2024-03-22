@@ -42,7 +42,7 @@ public class BuildingManager : MonoBehaviour
             {
                 Vector3 hitPosition = hit.point;
 
-                selectedBuilding.GameObject.transform.position = hitPosition + Vector3.up;
+                selectedBuilding.GameObject.transform.position = hitPosition;
 
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
@@ -51,7 +51,8 @@ public class BuildingManager : MonoBehaviour
                     if (inventory.CanBuild(selectedBuilding.ItemType, selectedBuilding.Cost) && hit.transform.tag == "BuildArea")
                     {
                         inventory.AddResource(selectedBuilding.ItemType, -selectedBuilding.Cost);
-                        GameObject newBuilding = Instantiate(selectedBuilding.GameObject, hitPosition + Vector3.up, Quaternion.identity);
+                        GameObject newBuilding = Instantiate(selectedBuilding.GameObject, hitPosition, Quaternion.identity);
+                        newBuilding.GetComponent<BuildingHealth>().startHealth = 100f;
                         newBuilding.SetActive(true);
                     }
                 }

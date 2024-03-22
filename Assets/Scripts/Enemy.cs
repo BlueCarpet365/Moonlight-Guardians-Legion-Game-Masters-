@@ -13,12 +13,11 @@ public class Enemy : MonoBehaviour
     public int damage = 10; // Damage dealt by the enemy
     public float damageInterval = 3f; // Interval between each damage
     private bool canDealDamage = true; // Flag to control damage dealing
-    private Animator animator;
+    [SerializeField] private Animator animator;
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
         FindAndSetTarget();
         health = startHealth;
     }
@@ -41,6 +40,13 @@ public class Enemy : MonoBehaviour
             {
                 mainBase.TakeDamage(damage);
             }
+
+            BuildingHealth buildingHealth = collision.gameObject.GetComponent<BuildingHealth>();
+            if (buildingHealth != null)
+            {
+                buildingHealth.TakeDamage(damage);
+            }
+
             animator.SetBool("isAttacking", true);
             animator.SetBool("isMoving", false);
         }
